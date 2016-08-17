@@ -3,18 +3,22 @@ from time import sleep
 
 @click.group()
 def cli():
+    """ Command line interface for the Bonsai Artificial Intelligence Engine.
+    """
     pass
 
 @click.command()
 def configure():
-    """ Authenticates the local command with the BRAIN Server.
+    """ Authenticate with the BRAIN Server.
     """
     click.echo("You can get the access key at https://brains.bons.ai/accesskey")
-    click.prompt("Secret Key", hide_input=True)
+    click.prompt("Secret Key (typing will be hidden)", hide_input=True)
     click.echo("Successfully authenticated.")
 
 @click.group()
-def brain():
+def brains():
+    """ Create, load, train BRAINs
+    """
     pass
 
 @click.command("list")
@@ -27,15 +31,15 @@ def brains_list():
 @click.argument('brain', nargs=1)
 @click.argument('filenames', nargs=-1)
 def load(brain, filenames):
-    """ Loads filename into BRAIN.
+    """ Loads FILENAMES into BRAIN.
     """
     click.echo("loaded.")
     click.echo("Connect simulators to wss://api.bons.ai/cksbonsai/myBRAIN for training.")
 
 @click.command()
-@click.argument("name")
-def train(name):
-    """ Trains a brain named NAME.
+@click.argument("brainname")
+def train(brainname):
+    """ Trains BRAINNAME
     """
     click.echo("training started.")
     click.echo("See https://brains.bons.ai/cksbonsai/myBRAIN for status.")
@@ -48,19 +52,23 @@ def train(name):
 
 @click.group()
 def sims():
+    """ Simulator connection state, data trasmitted, etc
+    """
     pass
 
 @click.command("list")
 def sims_list():
+    """ List the simulators connected to the BRAIN server.
+    """
     click.echo("NAME\t\tINSTANCES\tSTATUS")
     click.echo("breakout\t1\t\tready")
 
 cli.add_command(configure)
-cli.add_command(brain)
+cli.add_command(brains)
 cli.add_command(sims)
-brain.add_command(load)
-brain.add_command(train)
-brain.add_command(brains_list)
+brains.add_command(load)
+brains.add_command(train)
+brains.add_command(brains_list)
 sims.add_command(sims_list)
 
 if __name__ == "__main__":
